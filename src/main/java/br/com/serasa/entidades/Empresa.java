@@ -1,10 +1,14 @@
 package br.com.serasa.entidades;
 
 
+import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Empresa {
@@ -14,6 +18,9 @@ public class Empresa {
 	private Long id;
 	private String nome;
 	private int pontuacao;
+	@OneToMany(mappedBy = "empresa")
+	private List<DadosBancarios> dadosBancarios;
+	
 	public Long getId() {
 		return id;
 	}
@@ -33,21 +40,20 @@ public class Empresa {
 		this.pontuacao = pontuacao;
 	}
 	
-	public Empresa(Long id, String nome, int pontuacao) {
+	public List<DadosBancarios> getDadosBancarios() {
+		return dadosBancarios;
+	}
+	public void setDadosBancarios(List<DadosBancarios> dadosBancarios) {
+		this.dadosBancarios = dadosBancarios;
+	}
+	public Empresa() {
+	}
+	public Empresa(Long id, String nome, int pontuacao, List<DadosBancarios> dadosBancarios) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.pontuacao = pontuacao;
+		this.dadosBancarios = dadosBancarios;
 	}
-	
-	public Empresa(String nome) {
-		final int pontuacaoInicialEmpresa = 50;
-		this.nome = nome;
-		this.pontuacao = pontuacaoInicialEmpresa;
-	}
-	
-	public Empresa() {
-	}
-	
 }
 

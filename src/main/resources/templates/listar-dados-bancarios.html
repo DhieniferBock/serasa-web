@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+  	<title>Listar dados bancários</title>
+  	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  	<script src="/js/bootstrap.min.js"></script>
+  	<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+  	<link rel="stylesheet" href="/css/base.css"/>
+</head>
+ 
+<body>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<nav class="navbar navbar-expand-lg bg-primary col-md-8">
+	  			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				    <ul class="navbar-nav mr-auto">
+				    	<li class="nav-item dropdown">
+					        <a class="nav-link dropdown-toggle" 
+					        	href="#" id="navbarDropdown" 
+					        	role="button" 
+					        	data-toggle="dropdown" 
+					        	aria-haspopup="true" 
+					        	aria-expanded="false">
+					          Menu
+					        </a>
+					        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					          <a class="dropdown-item" href="/ranking">Ranking das empresas</a>
+					          <a class="dropdown-item" href="/dados-bancarios/incluir">Incluir dados bancários</a>
+					          <a class="dropdown-item" href="/dados-bancarios/listar">Listar financeiro</a>
+					        </div>
+					  	</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		
+		<div class="row justify-content-center">
+			<h1 class="page-header col-md-8">
+				Listagem financeira por empresa
+			</h1>
+			
+			<div id="accordion" class="col-md-8">
+				<div class="card" th:each="empresa: ${empresas}">
+			    	<div class="card-header" th:id="'heading'+${empresa.id}">
+			    		<h5 class="mb-0">
+			        		<button th:text="${empresa.nome}"
+			        			class="btn btn-link collapsed" 
+			        			data-toggle="collapse" 
+			        			th:data-target="'#colapse'+${empresa.id}" 
+			        			 aria-expanded="false"
+			        			th:aria-controls="'colapse'+${empresa.id}">
+			        		</button>
+			      		</h5>
+			    	</div>			
+				    <div th:id="'colapse'+${empresa.id}" 
+				    	class="collapse" 
+				    	th:aria-labelledby="'heading'+${empresa.id}" 
+				    	data-parent="#accordion">
+						<div class="card-body">
+				        	<table class="table table-hover table-sm">
+								<thead>
+							    	<tr>
+								      	<th>Data</th>
+								      	<th>Descrição</th>
+								    	<th>Tipo</th>
+								    	<th>Valor</th>
+									</tr>
+								</thead>
+								<tbody>
+								    <tr th:each="dados: ${empresa.dadosBancarios}">  
+								      	<td th:text="${dados.data}"></td>
+								      	<td th:text="${dados.descricao}"></td>
+								      	<td th:text="${dados.tipo}"></td>
+										<td th:text="${dados.valor}"></td>
+									</tr>
+								</tbody>
+							</table>
+				      	</div>
+				    </div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+  	<title>Ranking das empresas</title>
+  	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  	<script src="/js/bootstrap.min.js"></script>
+  	<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+  	<link rel="stylesheet" href="/css/base.css"/>
+</head>
+ 
+<body>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<nav class="navbar navbar-expand-lg bg-primary col-md-8">
+	  			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				    <ul class="navbar-nav mr-auto">
+				    	<li class="nav-item dropdown">
+					        <a class="nav-link dropdown-toggle" 
+					        	href="#" id="navbarDropdown" 
+					        	role="button" 
+					        	data-toggle="dropdown" 
+					        	aria-haspopup="true" 
+					        	aria-expanded="false">
+					          Menu
+					        </a>
+					        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					          <a class="dropdown-item" href="/ranking">Ranking das empresas</a>
+					          <a class="dropdown-item" href="/dados-bancarios/incluir">Incluir dados bancários</a>
+					          <a class="dropdown-item" href="/dados-bancarios/listar">Listar financeiro</a>
+					        </div>
+					  	</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		
+		<div class="row justify-content-center">
+			<h1 class="page-header">
+				Ranking das empresas
+			</h1>
+
+			<table class="table table-hover col-md-8">
+			  <thead>
+			    <tr>
+			      <th>Cód</th>
+			      <th>Nome</th>
+			      <th>Confiabilidade</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr th:each="empresa: ${empresas}">  
+			      <td th:text="${empresa.id}"></td>
+			      <td th:text="${empresa.nome}"></td>
+			      <td th:text="${empresa.pontuacao} + '%'"></td>
+			    </tr>
+			  </tbody>
+			</table>			
+		</div>
+	</div>
+	
+	
+</body>
+</html>

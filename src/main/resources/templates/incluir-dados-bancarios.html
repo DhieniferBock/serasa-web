@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+  	<title>Importação de Dados Bancários</title>
+  	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  	<script src="/js/bootstrap.min.js"></script>
+  	<link rel="stylesheet" href="/css/bootstrap.min.css"/>
+  	<link rel="stylesheet" href="/css/base.css"/>
+</head>
+ 
+<body>
+	<div class="container">
+	
+		<div class="row justify-content-center">
+			<nav class="navbar navbar-expand-lg bg-primary col-md-8">
+	  			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				    <ul class="navbar-nav mr-auto">
+				    	<li class="nav-item dropdown">
+					        <a class="nav-link dropdown-toggle" 
+					        	href="#" id="navbarDropdown" 
+					        	role="button" 
+					        	data-toggle="dropdown" 
+					        	aria-haspopup="true" 
+					        	aria-expanded="false">
+					          Menu
+					        </a>
+					        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					          <a class="dropdown-item" href="/ranking">Ranking das empresas</a>
+					          <a class="dropdown-item" href="/dados-bancarios/incluir">Incluir dados bancários</a>
+					          <a class="dropdown-item" href="/dados-bancarios/listar">Listar financeiro</a>
+					        </div>
+					  	</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		
+		<div class="row justify-content-center">
+			<h1 class="page-header">
+				Inclusão de dados bancários
+			</h1>
+		
+			<form class="col-md-8" method="POST" enctype="multipart/form-data" action="/dados-bancarios/exportar">
+			
+				<div class="form-group">
+					<label for="empresa">Selecione a empresa</label>
+				    <select class="form-control" id="empresa" name="empresa">
+						<option th:each="empresa : ${empresas}" 
+				      		th:value="${empresa.id}" 
+							th:text="${empresa.nome}"></option>
+					</select>
+				</div>
+			
+				<div class="form-group">
+					<label for="file">Selecione o arquivo</label>
+				    <div class="custom-file mb-3">
+				    	<input type="file" class="custom-file-input" id="file" name="file">
+				    	<label class="custom-file-label" for=file>Escolha o arquivo</label>
+				  	</div>
+				</div>
+			
+			  	<div class="mt-1">
+			    	<button type="submit" class="btn btn-primary">Exportar</button>
+			  	</div>
+			  	
+			</form>
+		</div>
+	</div>
+	
+	<script>
+		// Add the following code if you want the name of the file appear on select
+		$(".custom-file-input").on("change", function() {
+			var fileName = $(this).val().split("\\").pop();
+			$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+		});
+	</script>
+	
+</body>
+</html>

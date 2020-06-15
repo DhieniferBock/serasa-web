@@ -14,17 +14,17 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.HeaderColumnNameTranslateMappingStrategy;
 
-import br.com.serasa.dtos.ExportacaoDTO;
+import br.com.serasa.entidades.DadosBancarios;
 
 @Service
 public class CsvServico {
 	
-	public List<ExportacaoDTO> converterCsvParaExportacaoDto(MultipartFile arquivoCsv){
-		HeaderColumnNameTranslateMappingStrategy<ExportacaoDTO> strat = mapearCabecalho();
-		CsvToBean<ExportacaoDTO> csvToExportacao = null;
+	public List<DadosBancarios> converterCsvParaDadosBancarios(MultipartFile arquivoCsv){
+		HeaderColumnNameTranslateMappingStrategy<DadosBancarios> strat = mapearCabecalho();
+		CsvToBean<DadosBancarios> csvToExportacao = null;
 		try (Reader reader = new BufferedReader(new InputStreamReader(arquivoCsv.getInputStream()))) {
-			csvToExportacao = new CsvToBeanBuilder<ExportacaoDTO>(reader)
-                    .withType(ExportacaoDTO.class)
+			csvToExportacao = new CsvToBeanBuilder<DadosBancarios>(reader)
+                    .withType(DadosBancarios.class)
                     .withIgnoreLeadingWhiteSpace(true)
                     .withSeparator(';')
                     .withMappingStrategy(strat)
@@ -36,14 +36,15 @@ public class CsvServico {
 		return null;
 	}
 	
-	private HeaderColumnNameTranslateMappingStrategy<ExportacaoDTO> mapearCabecalho() {
-		HeaderColumnNameTranslateMappingStrategy<ExportacaoDTO> strat = 
-				new HeaderColumnNameTranslateMappingStrategy<ExportacaoDTO>();
-	    strat.setType(ExportacaoDTO.class);
+	private HeaderColumnNameTranslateMappingStrategy<DadosBancarios> mapearCabecalho() {
+		HeaderColumnNameTranslateMappingStrategy<DadosBancarios> strat = 
+				new HeaderColumnNameTranslateMappingStrategy<DadosBancarios>();
+	    strat.setType(DadosBancarios.class);
 	    Map<String, String> map = new HashMap<String, String>();
-	    map.put("Empresa", "empresa");
-	    map.put("Emissoes", "emissoes");
-	    map.put("Debitos", "debitos");
+	    map.put("Descricao", "descricao");
+	    map.put("Data", "data");
+	    map.put("Tipo", "tipo");
+	    map.put("Valor","valor");
 	    strat.setColumnMapping(map);
 	    return strat;
 	}

@@ -1,6 +1,12 @@
 package br.com.serasa.servicos;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -19,8 +25,13 @@ public class EmpresaServico {
 		return empresaRepositorio.findAll(Sort.by(Sort.Direction.ASC, "id"));
 	}
 	
-	public Empresa pegarEmpresaPeloNome(String nome) {
-		return empresaRepositorio.findByNomeLike(nome);
+	public Empresa pegarEmpresaPeloId(int id) {
+		long idLong = id;
+		Optional<Empresa> empresa = empresaRepositorio.findById(idLong); 
+		if (empresa.isEmpty()) {
+			return null;
+		}
+		return empresa.get();
 	}
 	
 	public Empresa salvarEmpresa(Empresa empresa) {
@@ -28,11 +39,8 @@ public class EmpresaServico {
 	}
 	
 	public void processarImportacoes(Empresa empresa, int notasFiscais, int debitos) {
-		System.out.println("	###	"+empresa.getNome());
 		processarNotasFiscais(empresa, notasFiscais);
-		System.out.println("Após notas fiscais: " + empresa.getPontuacao());
 		processarDebitos(empresa, debitos);
-		System.out.println("Após débitos: " + empresa.getPontuacao());
 	}
 	
 	private void processarNotasFiscais (Empresa empresa, int notasFiscais) {
@@ -43,29 +51,37 @@ public class EmpresaServico {
 				break;
 			}
 			double resultadoPorcentagem = (empresa.getPontuacao() * porcentagemAumentadaPorNotaFiscal) / 100;
-			int novaPontuacao = (int) (empresa.getPontuacao()  + Math.ceil(resultadoPorcentagem));
-			
+			double novaPontuacao = empresa.getPontuacao()  + resultadoPorcentagem;
+			int novaPontuacaoInteira = (int) Math.floor(novaPontuacao);
 			if (novaPontuacao >= 100) {
 				empresa.setPontuacao(pontuacaoMaxima);
 			} else {
-				empresa.setPontuacao(novaPontuacao);
+				empresa.setPontuacao(novaPontuacaoInteira);
 			}
 		}
 	}
 	
 	private void processarDebitos (Empresa empresa, int debitos) {
 		final int pontuacaoMinima = 1;
-		final int porcentagemDiminuidaPorDebito = 4;
+		final BigDecimal porcentagemDiminuidaPorDebito = new BigDecimal(4);
 		for(int i = 0; i < debitos; i++) {
 			if(empresa.getPontuacao() == 1) {
 				break;
 			}
-			double resultadoPorcentagemDeb = (empresa.getPontuacao() * porcentagemDiminuidaPorDebito) / 100;
-			int novaPontuacao = (int) (empresa.getPontuacao() - Math.floor(resultadoPorcentagemDeb));
-			if (novaPontuacao <= 1) {
+			
+			BigDecimal pontuacaoEmpresa = new BigDecimal(empresa.getPontuacao());
+			BigDecimal porcentagem = new BigDecimal(100);
+			BigDecimal porcentagemMultiplicacao = pontuacaoEmpresa.multiply(porcentagemDiminuidaPorDebito);
+			BigDecimal resultadoPorcentagem = porcentagemMultiplicacao.divide(porcentagem);
+			BigDecimal novaPontuacaoCompleta = pontuacaoEmpresa.subtract(resultadoPorcentagem);
+			BigDecimal novaPontuacaoUmaCasaDecimal = novaPontuacaoCompleta.setScale(1, RoundingMode.FLOOR);
+			BigDecimal novaPontuacaoArredondada = novaPontuacaoUmaCasaDecimal.setScale(0, RoundingMode.CEILING);
+			
+			int novaPontuacaoInteira = novaPontuacaoArredondada.intValue();
+			if (novaPontuacaoInteira <= 1) {
 				empresa.setPontuacao(pontuacaoMinima);
 			} else {
-				empresa.setPontuacao(novaPontuacao);
+				empresa.setPontuacao(novaPontuacaoInteira);
 			}			
 		}
 	}
