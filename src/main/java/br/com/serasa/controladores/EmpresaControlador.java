@@ -12,13 +12,18 @@ import br.com.serasa.entidades.Empresa;
 import br.com.serasa.servicos.EmpresaServico;
 
 @Controller
-@RequestMapping("/ranking")
+@RequestMapping("/")
 public class EmpresaControlador {
 	
 	@Autowired
 	private EmpresaServico empresaServico;
 	
-	@GetMapping
+	@GetMapping(path = "/")
+	public String inicio() { 
+		return "redirect:/ranking";
+	}	
+	
+	@GetMapping(path = "/ranking")
 	public ModelAndView ranking() { 
 		List<Empresa> empresas = empresaServico.listarEmpresas();
 		ModelAndView modelAndView = new ModelAndView("ranking");
