@@ -31,10 +31,12 @@ public class DadosBancariosControlador {
 	private CsvServico csvServico;
 	
 	@GetMapping("/incluir")
-	public ModelAndView incluirDadosBancarios() { 
+	public ModelAndView incluirDadosBancarios(
+			@RequestParam(value ="erro", required = false) String erro) { 
 		List<Empresa> empresas = empresaServico.listarEmpresas();
 		ModelAndView modelAndView = new ModelAndView("incluir-dados-bancarios");
 	    modelAndView.addObject("empresas", empresas);
+	    modelAndView.addObject("erro", erro);
 	    return modelAndView;
 	}
 	
@@ -48,6 +50,9 @@ public class DadosBancariosControlador {
 	
 	@PostMapping("/exportar")
 	public String exportarArquivo(@RequestParam("file") MultipartFile arquivoCsv, @RequestParam("empresa") int idEmpresa) {
+		if (!csvServico.validarFormatoArquivo(arquivoCsv)) {
+			return "redirect:/dados-bancarios/incluir?erro=O arquivo deve ser conforme o modelo no formato .csv";
+		}
 	    List<DadosBancarios> linhasArquivo = csvServico.converterCsvParaDadosBancarios(arquivoCsv);
 	    linhasArquivo = dadosBancariosServico.removerLinhasVazias(linhasArquivo);
 	    Empresa empresa = empresaServico.pegarEmpresaPeloId(idEmpresa);

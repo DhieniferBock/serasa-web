@@ -36,6 +36,14 @@ public class CsvServico {
 		return null;
 	}
 	
+	public boolean validarFormatoArquivo(MultipartFile arquivoCsv) {
+		if (arquivoCsv.getOriginalFilename().toUpperCase().endsWith(".CSV")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	private HeaderColumnNameTranslateMappingStrategy<DadosBancarios> mapearCabecalho() {
 		HeaderColumnNameTranslateMappingStrategy<DadosBancarios> strat = 
 				new HeaderColumnNameTranslateMappingStrategy<DadosBancarios>();

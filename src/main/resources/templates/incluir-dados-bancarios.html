@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
   	<title>Importação de Dados Bancários</title>
-  	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  	<script src="/js/jquery-3.3.1.slim.min.js" ></script>
+  	<script src="/js/popper.js/1.14.6/umd/popper.min.js"></script>
   	<script src="/js/bootstrap.min.js"></script>
   	<link rel="stylesheet" href="/css/bootstrap.min.css"/>
   	<link rel="stylesheet" href="/css/base.css"/>
@@ -39,9 +39,10 @@
 		
 		<div class="row justify-content-center">
 			<h1 class="page-header">
-				Inclusão de dados bancários
+				Inclusão de dados bancários <br/>
+				<small>Faça download do modelo - <a href="/modelo.csv">modelo.csv</a></small>
 			</h1>
-		
+			
 			<form class="col-md-8" method="POST" enctype="multipart/form-data" action="/dados-bancarios/exportar">
 			
 				<div class="form-group">
@@ -59,6 +60,10 @@
 				    	<input type="file" class="custom-file-input" id="file" name="file">
 				    	<label class="custom-file-label" for=file>Escolha o arquivo</label>
 				  	</div>
+				</div>
+				
+				<div class="alert alert-danger" role="alert" th:if="${erro}">
+					<span th:text="${erro}"></span>
 				</div>
 			
 			  	<div class="mt-1">
