@@ -1,4 +1,4 @@
-#*Serasa Web*
+# *Serasa Web*
 
 ### 1. Produção
 
@@ -9,7 +9,7 @@ Através do menu estará disponível para você navegar nas páginas abaixo.
 #### [Ranking das empresas](https://serasa-web.herokuapp.com/ranking)
 Nesta tela será listado todas as empresas com os dados de:
 - **Código**
-- **Nome **
+- **Nome**
 - **Confiabilidade**
 
 Podendo verificar a confiabilidade das empresas após inclusão de dados bancários.
@@ -32,8 +32,12 @@ Nesta tela será listado as empresas com todos os dados bancários importados pa
 Para visualizar os dados bancários da empresa selecionada, clique sobre ela, para recolher as informações, basta clicar sobre ela novamente.
 
 #### Processamento
+Para ser processado uma linha do arquivo csv, é necessário que a coluna **Tipo** seja preenchida com o valor **DEBITO** ou **EMISSAO**.
+Caso a coluna **Tipo** não for preenchida, a linha será ignorada.
+Não será obrigatório o preenchimento de valores nas colunas **Descricao**, **Data** e **Valor**.
+
 O cálculo desenvolvido para seguir os requisitos encontrou uma inconsistência quando efetuado testes que forçam diminuir a pontuação.
-Exemplo: Se a pontuação é 22 e possuir um débito um débito:
+Exemplo: Se a pontuação é 22 e possuir um débito:
 Computando o debito 1 -> 22 - 0,88 = 21,12. Sendo que "0,88" é 4% de 22.
 Pontuação final é 22, ou seja a pontuação 22 é a pontuação mínima, levando em consideração o arredondadmento para cima a partir da primeira casa decimal.
 
@@ -45,6 +49,8 @@ Obter e configurar os seguintes sistemas:
 - **Maven 3.6.3.**
 - **PostgreSQL 12.**
 
+Faça download do programa no [Github](https://github.com/DhieniferBock/serasa-web)
+
 Para conferir a conexão com o banco de dados abra o arquivo **/serasa-web/src/main/resources/application-dev.properties**
 
 É necessário abrir em sua máquina o arquivo **/serasa-web/src/main/resources/application.properties** e editar a primeira linha para:
@@ -53,13 +59,13 @@ Para conferir a conexão com o banco de dados abra o arquivo **/serasa-web/src/m
 spring.profiles.active=dev
 ```
 
-Ao fazer donwload do sistema é necessário rodar o seguinte comando:
+É necessário rodar o seguinte comando:
 
 ```
 mvn clean install
 ```
 
-Após a conclusão com BUILD SUCCESS, rodar o comando:
+Após a conclusão com BUILD SUCCESS, rodar o comando abaixo:
 
 ```
 mvnw spring-boot:run
