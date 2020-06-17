@@ -2,7 +2,9 @@
 
 ### 1. Produção
 
-Para acessar a aplicação desenvolvida entre no site - [SERASA WEB](https://serasa-web.herokuapp.com)
+Para acessar a aplicação desenvolvida entre no site - [SERASA WEB](https://serasa-web.herokuapp.com).
+ 
+O primeiro acesso poderá levar até 1 minuto para ser inicializado, quando inativo o servidor é desligado. 
 
 Através do menu estará disponível para você navegar nas páginas abaixo.
 
